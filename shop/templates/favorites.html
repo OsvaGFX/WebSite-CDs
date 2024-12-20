@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if products %}
+<center><h2 class="text-white">Favoritos ❤</h2></center>
+<hr class="text-white">
+<div class="row justify-content-center">
+    {% for product in products %}
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm" style="width: 16rem; background-color: #5D4F47; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <img style="object-fit: cover;" class="card-img-top mt-2" width="268" height="200" src="{{ product.image.url }}">
+            <div class="card-body text-center">
+                <h5 class="card-title" style="color: white;">{{ product.title }}</h5>
+                <p class="card-text" style="color: #D8D8D8;">Precio: ${{ product.price }}</p>
+                <a href="{{ product.get_absolute_url }}" class="btn btn-outline-primary w-100 mb-2">Comprar ahora!</a>
+                <a href="{% url 'shop:remove_from_favorites' product.id %}" class="btn btn-outline-danger w-100">Eliminar de favoritos 💔</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 mt-5 pt-5 text-center">
+        <h3 class="text-white text-capitalize fw-bold">Tu lista de favoritos está vacía!</h3>
+        <a href="/" class="text-primary text-decoration-none fw-bold">Volver a la tienda</a>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+{% endif %}
+{% endblock %}
+
+<style>
+    .card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #d9534f;
+        color: white;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn {
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+
+    .text-white {
+        font-family: Arial, sans-serif;
+    }
+
+    hr {
+        width: 50%;
+        border-color: #fff;
+    }
+
+    /* Asegurar que la columna se vea bien en móviles */
+    @media (max-width: 768px) {
+        .col-md-3 {
+            max-width: 100%;
+        }
+    }
+</style>

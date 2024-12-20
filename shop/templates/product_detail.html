@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row mb-3 mt-4">
+    <div class="col-md-1"></div>
+    <!-- product content -->
+    <div class="col-md-5 p-4 border rounded d-flex flex-column" style="background-color: #5D4F47;">
+        <!-- category -->
+        <div class="border-bottom mb-2 pb-2">
+            <span class="text-white">Categorías:</span>
+            <a class="text-decoration-none link-info" href="{% url 'shop:filter_by_category' product.category.slug %}">
+                <span style="color: #F8F8F8;">{{ product.category }}</span>
+            </a>
+        </div>
+        <!-- title -->
+        <center><h2 class="text-white">{{ product.title }}</h2></center>
+        <!-- price -->
+        <center><h4 class="mt-4 text-white">Precio: ${{ product.price }}</h4></center>
+        <!-- description -->
+        <center><div class="mt-4 pe-3 mb-5 text-center text-white">{{ product.description }}</div></center>
+
+        <!-- Formulario para agregar al carrito -->
+        <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_quantity" class="text-white">Cantidad:</label>
+                {{ form.quantity }}  <!-- Spinner de cantidad -->
+            </div>
+            <input type="submit" class="btn btn-primary mt-4 w-100" value="Agregar al carrito 🛒">
+        </form>
+        <br>
+        
+        <!-- Botones de favoritos -->
+        {% if favorites == 'remove' %}
+            <a href="{% url 'shop:remove_from_favorites' product.id %}" class="btn btn-outline-danger mt-5 w-100">Eliminar de tus favoritos 💔</a>
+        {% else %}
+            <a href="{% url 'shop:add_to_favorites' product.id %}" class="btn btn-outline-success mt-5 w-100">Agregar a tus favoritos ❤</a>
+        {% endif %}
+    </div>
+
+    <!-- Imagen del producto -->
+    <div class="col-md-6 d-flex justify-content-center">
+        <img style="object-fit: cover; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);" src="{{ product.image.url }}" width="510" height="500">
+    </div>
+</div>
+
+<!-- Sección de comentarios -->
+<div class="row mb-4 mt-4">
+    <div class="col-md-12">
+        <h4 class="text-white">Comentarios:</h4>
+        <!-- Mostrar comentarios -->
+        <div class="mb-4">
+            {% for comment in comments %}
+                <div class="border rounded p-3 mb-2 bg-light">
+                    <strong>{{ comment.user.username }}</strong> - <small>{{ comment.created_at|date:"d M, Y H:i" }}</small>
+                    <p class="mt-2">{{ comment.content }}</p>
+                </div>
+            {% empty %}
+                <p class="text-white">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+            {% endfor %}
+        </div>
+
+        <!-- Formulario para agregar comentarios -->
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ comment_form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-success w-100">Añadir comentario</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+<style>
+  .row {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .col-md-5, .col-md-6 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .col-md-5 {
+    flex: 1;
+  }
+
+  .col-md-6 {
+    flex: 1;
+  }
+
+  /* Estilo para los botones hover */
+  .btn:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
+
+  /* Estilo del formulario de comentarios */
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  .form-control:focus {
+    border-color: #3A3A3A;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Estilo para los comentarios */
+  .comment-card {
+    background-color: #F8F8F8;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+
+  .comment-card:hover {
+    background-color: #E0E0E0;
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+  }
+
+  .comment-card strong {
+    color: #333;
+  }
+
+  .comment-card small {
+    color: #777;
+  }
+</style>

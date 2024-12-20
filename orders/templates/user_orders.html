@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+    {% if orders %}
+    <h2 class="text-center text-white">Mis compras 🛍</h2>
+    <hr class="text-white">
+    {% for order in orders %}
+    <div class="col-md-8 mb-4 mx-auto border rounded p-4 shadow-sm" style="background-color: #f8f9fa;">
+        <!-- Order ID -->
+        <div class="d-flex justify-content-between">
+            <span class="text-muted">Orden No.: <b>#{{ order.id }}</b></span>
+            {% if order.status %}
+            <span class="badge bg-success text-white">Entregado</span>
+            {% else %}
+            <span class="badge bg-danger text-white">Cancelado</span>
+            {% endif %}
+        </div>
+        <hr class="my-3">
+        <!-- Productos en la orden -->
+        {% for item in order.items.all %}
+        <div class="border-bottom mb-3 pb-3">
+            <p class="mb-1"><b>Producto:</b> <a href="{{ item.product.get_absolute_url }}" class="text-decoration-none text-dark">{{ item.product.title }}</a></p>
+            <p class="mb-1"><b>Precio c/u:</b> ${{ item.price }}</p>
+            <p class="mb-0"><b>Cantidad:</b> {{ item.quantity }}</p>
+        </div>
+        {% endfor %}
+        <!-- Precio total -->
+        <h5 class="text-end mt-3"><b>Precio total:</b> ${{ order.get_total_price }}</h5>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-md-8 mt-5 pt-5 text-center mx-auto">
+        <h2 class="text-white text-capitalize">Aún no tienes compras hechas!</h2>
+        <a href="/" class="btn btn-primary mt-3">Volver a la tienda</a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .shadow-sm {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    hr {
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% load i18n %}{% autoescape off %}
+{% blocktranslate %}Usted ha recibido este correo porque ha solicitado el restablecimiento de su contraseña en el sitio SoulMusic.{% endblocktranslate %}
+
+{% translate "El siguiente link te redigira a la pantalla para crear tu nueva contraseña: " %}
+{% block reset_link %}
+{{ protocol }}://{{ domain }}{% url 'accounts:password_reset_confirm' uidb64=uid token=token %}
+{% endblock %}
+{% translate "Si usted no solicito el cambio de su contraseña, solo haga caso omiso" %}
+
+
+{% blocktranslate %}Atte: SoulMusic{% endblocktranslate %}
+
+{% endautoescape %}

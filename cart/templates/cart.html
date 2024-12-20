@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    {% if cart_count != 0 %}
+    <h2 class="text-center text-white mb-4">Resumen de compra 💸</h2>
+    <div class="col-md-12">
+        <div class="border rounded p-3 shadow-lg" style="background-color: #f8f9fa;">
+            <table class="table table-striped table-bordered">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio total</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><a class="text-decoration-none text-dark" href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></td>
+                        <td>${{ item.price }}</td>
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td>${{ item.total_price }}</td>
+                        <td><a class="text-danger text-decoration-none" href="{% url 'cart:remove_from_cart' item.product.id %}">Eliminar 🗑</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <div class="d-flex justify-content-between mt-4">
+                <a href="/" class="btn btn-outline-danger">Seguir comprando 🛒</a>
+                <a href="{% url 'orders:create_order' %}" class="btn btn-outline-success">Comprar ahora!</a>
+            </div>
+            <h4 class="mt-4 text-dark"><span class="text-primary">Precio total:</span> ${{ cart.get_total_price }}</h4>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-md-12 mt-5 pt-5 text-center">
+        <h3 class="text-capitalize text-white fw-bold">Tu carrito está vacío!</h3>
+        <a href="/" class="text-primary text-decoration-none fw-bold">Volver a la tienda</a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .table {
+        background-color: #ffffff;
+        border-radius: 8px;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f2f2f2;
+    }
+
+    .table-bordered {
+        border-color: #ddd;
+    }
+
+    .table th {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+    }
+
+    .table td {
+        color: #333;
+        text-align: center;
+    }
+
+    .btn {
+        border-radius: 25px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-outline-success {
+        color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .shadow-lg {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .bg-primary {
+        background-color: #007bff !important;
+    }
+
+    hr {
+        border: 1px solid #ddd;
+    }
+</style>
+{% endblock %}

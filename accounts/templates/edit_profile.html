@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="col-md-6 mx-auto border rounded p-4 shadow-lg" style="background-color: #f8f9fa;">
+        <h3 class="text-center text-primary">Editar Perfil</h3>
+        <hr>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-4">
+                {{ form|crispy }}
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success w-100" type="submit">Actualizar perfil</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .shadow-lg {
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-success {
+        font-size: 1.1rem;
+        border-radius: 25px;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    hr {
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="col-md-8 mx-auto border rounded p-4 shadow-lg" style="background-color: #f8f9fa;">
+        <h3 class="text-dark">El total de tu pedido es: <span class="text-primary">${{ order.get_total_price }}</span></h3>
+        <hr class="my-4">
+        <p class="mb-4 text-muted"><b>¿Deseas continuar al pago?</b></p>
+        <!-- Botones -->
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'cart:show_cart' %}" class="btn btn-outline-danger">Volver al carrito</a>
+            <a href="{% url 'orders:create_order' %}" class="btn btn-success">Continuar y pagar ${{ order.get_total_price }}</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .shadow-lg {
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn {
+        border-radius: 25px;
+        font-size: 1rem;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+</style>
+
+{% endblock %}
